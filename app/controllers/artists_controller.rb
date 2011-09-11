@@ -1,7 +1,4 @@
 class ArtistsController < DiscogsController
-  #include Diskoggr
-
-  before_filter :set_user_agent
 
   # GET /artists
   # GET /artists.json
@@ -17,18 +14,8 @@ class ArtistsController < DiscogsController
   # GET /artists/1
   # GET /artists/1.xml
   def show
-    if Artist.exists?(params[:id])
-      @artist = Artist.find(params[:id])
-    else
-      @artist = Artist.find_by_name(params[:id])
-    end
-    if @artist.nil?
-      # id is artist name
-      @artist_name =params[:id]
-    else
-      @artist_name =@artist.name
-    end
-
+    @artist = get_artist
+    @artist_name = get_artist_name
     @discogs_releases = get_discogs_releases_paginated(@artist_name) unless @artist_name.blank?
 
     respond_to do |format|
@@ -46,6 +33,7 @@ class ArtistsController < DiscogsController
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @artist }
+      format.js
     end
   end
 

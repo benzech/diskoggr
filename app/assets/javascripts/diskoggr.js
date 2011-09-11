@@ -1,3 +1,3 @@
-$('.delete_post').bind('ajax:success', function() {
+$('.delete_artist').bind('ajax:success', function() {
     $(this).closest('tr').fadeOut();
 });
