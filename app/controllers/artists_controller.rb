@@ -14,13 +14,13 @@ class ArtistsController < DiscogsController
   # GET /artists/1
   # GET /artists/1.xml
   def show
-    @artist = get_artist
+    @discogs_releases = {}
     @artist_name = get_artist_name
     @discogs_releases = get_discogs_releases_paginated(@artist_name) unless @artist_name.blank?
 
     respond_to do |format|
       format.html # show.html.erb
-      format.xml { render :xml => @artist }
+      #format.xml { render :xml => @artist }
       format.js
     end
   end
@@ -51,6 +51,7 @@ class ArtistsController < DiscogsController
       if @artist.save
         format.html { redirect_to @artist, notice: 'Artist was successfully created.' }
         format.json { render json: @artist, status: :created, location: @artist }
+        format.js
       else
         format.html { render action: "new" }
         format.json { render json: @artist.errors, status: :unprocessable_entity }
@@ -84,7 +85,20 @@ class ArtistsController < DiscogsController
     respond_to do |format|
       format.html { redirect_to artists_url }
       format.json { head :ok }
-      format.js { render :nothing => true }
+      #format.js { render :nothing => true }
+    end
+  end
+
+  # GET /artists/name
+  # GET /artists/name.xml
+  def list
+    @artist_name = get_artist_name
+    @discogs_releases = get_discogs_releases_paginated(@artist_name) unless @artist_name.blank?
+
+    respond_to do |format|
+      format.html # show.html.erb
+      #format.xml { render :xml => @artist }
+      format.js
     end
   end
 end

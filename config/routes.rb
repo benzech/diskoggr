@@ -1,6 +1,9 @@
 Diskoggr::Application.routes.draw do
   resources :artists
 
+  match '/' => 'artists#new'
+  match '/:id' => 'artists#show'
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

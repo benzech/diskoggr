@@ -1,23 +1,10 @@
-<h1>Listing artists</h1>
+<h2>Search</h2>
+<h3>or browse previous searches</h3>
 
 <table>
-  <tr>
-    <th>Name</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
-
 <% @artists.each do |artist| %>
   <tr>
-    <td><%= artist.name %></td>
-    <td><%= link_to 'Show', artist %></td>
-    <td><%= link_to 'Edit', edit_artist_path(artist) %></td>
-    <td><%= link_to 'Destroy', artist, :confirm => 'Are you sure?', :method => :delete, :remote=>true, :class=>'delete_artist' %></td>
+    <td><%= link_to artist.name, artist %></td>
   </tr>
 <% end %>
 </table>
-
-<br />
-
-<%= link_to 'New Artist', new_artist_path %>

@@ -1,4 +1,3 @@
-
 <h2>Discogs Releases</h2>
 <table>
   <tr>
@@ -7,14 +6,17 @@
     <th>Year</th>
     <th>Label</th>
   </tr>
-  <% @discogs_releases.length.times do |i| %>
-      <tr>
-        <td><img src="<%= @discogs_releases[i].thumb %>"/></td>
-        <td><%= @discogs_releases[i].title %></td>
-        <td><%= @discogs_releases[i].year %></td>
-        <td><%= @discogs_releases[i].label %></td>
-      </tr>
+  <% @discogs_releases.length.times do |i|
+      if @discogs_releases %>
+          <tr>
+            <td><img src="<%= @discogs_releases[i].thumb %>"/></td>
+            <td><%= @discogs_releases[i].title %></td>
+            <td><%= @discogs_releases[i].year %></td>
+            <td><%= @discogs_releases[i].label %></td>
+          </tr>
+      <% end %>
+      </table>
+
+      <!-- render page links in the view: -->
+      <%= will_paginate @discogs_releases %>
   <% end %>
-</table>
-<!-- render page links in the view: -->
-<%= will_paginate @discogs_releases %>
