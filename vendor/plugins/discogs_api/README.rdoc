@@ -1,0 +1,58 @@
+== DiscogsApi
+
+Rails plugin that provides simple access to the Discogs 2.0 API (see http://www.discogs.com/help/api)
+
+This plugin simply retrieves JSON from the Discogs API.
+(Initially this wrapped the response in a Hashie::Mash to 
+return pseudo-objects that have method-like accessors,
+but decided to just return the raw JSON. Feel free to use
+the awesome Hashie with the returned JSON!)
+
+=== Installation
+
+To install as a Rails 3 plugin:
+
+  script/rails plugin install git://github.com/roblambert/discogs_api.git
+
+To install as a Rails 2 plugin:
+
+  script/plugin install git://github.com/roblambert/discogs_api.git
+
+Dependencies are managed with Bundler, make sure it is installed:
+
+  gem install bundler
+
+Then to install required gems:
+
+  bundle install
+
+=== Example Usage
+
+  # Provide your own unique user-agent when creating a DiscogsApi instance,
+  # you would probably want to put this in a Rails initializer
+  DiscogsApi.user_agent = "YourUserAgent/VERSION +http://YourWebsite"
+  
+  # Get an artist
+  artist_json = DiscogsApi.get_artist("Van Halen")
+  artist = Hashie::Mash.new artist_json
+
+  # inspect the artist
+  puts "Yay, retrieved #{artist.name}."
+  puts "Their primary website is #{artist.urls.first}."
+  puts "Their first release listed in the response is #{artist.releases.first.title}"
+  puts " which was released on #{artist.releases.first.label}"
+
+  sleep 1 # :) Discogs asks that you do not hit the service more than once a second from an IP address!
+
+  # Let's find more information about the first release listed in the artist object...
+  release_json = DiscogsApi.get_release(artist.releases.first.id)
+  release = Hashie::Mash.new release_json
+  puts "A little more info about this release: #{release.notes}"
+  puts "The track listing for #{release.title} by #{release.artists.first.name} is: "
+  release.tracklist.each do |track|
+    puts " #{track.position}) #{track.title} [#{track.duration}]"
+  end
+
+More example usage in spec/discogs_api_spec.rb
+
+Copyright (c) 2011 Zabada, Inc., released under the MIT license
